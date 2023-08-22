@@ -69,6 +69,11 @@ def check_if_enrolled(user, course):
             is_enrolled = True
     return is_enrolled
 
+def get_choices(question):
+    if question.id is not None:
+        choices = Choice.objects.filter(question_id=question.id)
+    return choices
+
 
 # CourseListView
 class CourseListView(generic.ListView):
@@ -88,6 +93,13 @@ class CourseDetailView(generic.DetailView):
     model = Course
     template_name = 'onlinecourse/course_detail_bootstrap.html'
 
+    def get_queryset(self):
+        question_list = []
+        questions = Question.objects.all()
+        for question in questions:
+            choices = get_choices(question)
+            question_list.append([question, choices])
+        return question_list
 
 def enroll(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
