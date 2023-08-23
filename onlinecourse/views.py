@@ -93,12 +93,13 @@ class CourseDetailView(generic.DetailView):
     model = Course
     template_name = 'onlinecourse/course_detail_bootstrap.html'
 
-    def get_queryset(self):
-        question_list = []
+    def get_context_data(self, **kwargs):
+        question_list = {}
         questions = Question.objects.all()
+        question_n = 0
         for question in questions:
             choices = get_choices(question)
-            question_list.append([question, choices])
+            question_list[question_n] = {'question': question, 'choices': choices }
         return question_list
 
 def enroll(request, course_id):

@@ -58,17 +58,21 @@
 
            
             {% if user.is_authenticated %}
-                {% for question in question_list %}
+                {% for key, values in question_list.items %}
                     <div id="exam" class="collapse">
                         <div id="question">
-                           {{ question[0].question_text }} 
+                           {{values}} 
                         </div>
                         Click to expand elements within the collapse div
                     </div>
-                {% else %}
+                    <p> ttt </p>
+                {% endfor %}
 
+                
+            {% else %}
+                        <p>You have no access to the quiz</p>
 
-                {% endif %}
+            {% endif %}
 
          
 
