@@ -94,13 +94,17 @@ class CourseDetailView(generic.DetailView):
     template_name = 'onlinecourse/course_detail_bootstrap.html'
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         question_list = {}
         questions = Question.objects.all()
         question_n = 0
         for question in questions:
             choices = get_choices(question)
             question_list[question_n] = {'question': question, 'choices': choices }
-        return question_list
+            question_n = question_n + 1
+        
+        context["data"] = question_list
+        return context
 
 def enroll(request, course_id):
     course = get_object_or_404(Course, pk=course_id)

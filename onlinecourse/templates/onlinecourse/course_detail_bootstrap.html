@@ -58,13 +58,15 @@
 
            
             {% if user.is_authenticated %}
-                {% for key, values in question_list.items %}
-                    <div id="exam" class="collapse">
+                {% for key, values in data.items %}
+                    <!-- <div id="exam" class="collapse"> -->
                         <div id="question">
-                           {{values}} 
+                           {{values.choices}} 
                         </div>
-                        Click to expand elements within the collapse div
-                    </div>
+                        {% for value in values.choices %}
+                           {{value.choice_text}}
+                        {% endfor %}
+                    <!-- </div> -->
                     <p> ttt </p>
                 {% endfor %}
 
