@@ -56,20 +56,36 @@
             <!-- <HINT> Use Bootstrap Collapse to hide exam first, more details could be found here
             https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
 
-           
+            
             {% if user.is_authenticated %}
-                {% for key, values in data.items %}
-                    <!-- <div id="exam" class="collapse"> -->
-                        <div id="question">
-                           {{values.choices}} 
+            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#exam">Show Exam</button>
+                <form id="questionform" action="point to a submit view" method="post">  
+                    <div id="exam" class="collapse"> 
+                        {% for key, values in data.items %}
+                        <div id="question" class="card mt-1">
+                            <div class="card-header"><h5>{{ values.question.question_text}}</h5></div>
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="form-check">
+                                    {% for choice in values.choices %}
+                                    <label class="d-block form-check-label">
+                                        <input type="checkbox" name="choice_{{choice.id}}"
+                                               class="form-check-input" id="{{choice.id}}"
+                                               value="{{choice.id}}">{{ choice.choice_text }}
+                                    </label>
+                                {% endfor %}
+                                </div>
+                            </div>
                         </div>
-                        {% for value in values.choices %}
-                           {{value.choice_text}}
-                        {% endfor %}
-                    <!-- </div> -->
-                    <p> ttt </p>
-                {% endfor %}
-
+                            <div id="choices">
+                                {% for value in values.choices %}
+                                    {{value.choice_text}}
+                                {% endfor %}
+                            </div>
+                         {% endfor %}
+                         <input class="btn btn-success btn-block" type="submit" value="Submit">
+                    </div>    
+                </form> 
                 
             {% else %}
                         <p>You have no access to the quiz</p>
@@ -90,25 +106,8 @@
             <input type="check" name="choice_{{choice.id}}" id="{{choice.id}}" ...>
             -->
 
-            <!-- A choice submission form example
-            <form id="questionform" action="point to a submit view" method="post">
-                        ... for each question in the course ...
-                        <div class="card mt-1">
-                            <div class="card-header"><h5>{{ question.question_text}}</h5></div>
-                            {% csrf_token %}
-                            <div class="form-group">
-                               ... for each choice in the question ...
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="checkbox" name="choice_{{choice.id}}"
-                                               class="form-check-input" id="{{choice.id}}"
-                                               value="{{choice.id}}">{{ choice.choice_text }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    <input class="btn btn-success btn-block" type="submit" value="Submit">
-            </form> -->
+         <!-- A choice submission form example -->
+         
 
             <!--Check here to see more details Bootstrap checkbox
              https://www.w3schools.com/bootstrap4/bootstrap_forms_inputs.asp-->
