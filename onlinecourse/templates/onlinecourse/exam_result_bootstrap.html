@@ -39,16 +39,45 @@
     {% if grade > 80 %}
     <div class="alert alert-success">
        <!--HINT Display passed info -->
+       <b>Congratulaitons</b>, {{ user.first_name }} You have passed the exam and completed the course with a score of {{grade}}/100
     </div>
         {% else %}
         <div class="alert alert-danger">
             <!--HINT Display failed info -->
+            <b>Failed</b> Sorry, {{ user.first_name }} You have failed the exam with a score of {{grade}}/100
         </div>
         <a class="btn btn-link text-danger" href="{% url 'onlinecourse:course_details' course.id %}">Re-test</a>
         {% endif %}
         <div class="card-columns-vertical mt-1">
         <h5 class="">Exam results</h5>
             <!--HINT Display exam results-->
+            {% for question in choice.question_set.all %}   
+                <div class="card mt-1">
+                    <div class="card-header"><h5>{{ question.question_text }}</h5></div>
+                    {% csrf_token %}
+                    <div class="form-group">                    
+                        {% for option in question.choice_set.all %}
+                            <div>                                
+                                {% if option.is_correct == True%}
+                                    {% if option in choices %}
+                                        <div class=text-success>   
+                                            Correct Answer: {{ option.choice_text }}
+                                        </div>                                      
+
+                                    {% elif option.is_correct == True %}  
+                                    <div class=text-warning>   
+                                        Not Selected: {{ option.choice_text }}
+                                    </div>   
+                                    {% endif %} 
+
+                                {% else %}
+                                    {{ option.choice_text }}
+                                {% endif %}
+                            </div>
+                        {% endfor %}                   
+                    </div>
+                </div>                        
+            {% endfor %}
         </div>
     </div>
 </body>
